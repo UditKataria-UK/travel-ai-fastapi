@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trip Planner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HERO -->
+    <header class="hero">
+        <span class="badge">✦ AI POWERED TRAVEL PLANNER</span>
+        <h1>Plan Your Perfect Trip</h1>
+        <p>Let AI create a personalized itinerary, discover places, find hotels, and plan your budget.</p>
+    </header>
+
+    <main class="container">
+
+        <!-- TRIP INPUT CARD -->
+        <form id="tripForm" class="card form-card">
+
+            <div class="field field-wide">
+                <label for="destination">Destination</label>
+                <div class="input-wrap">
+                    <span class="icon">🌍</span>
+                    <input type="text" id="destination" placeholder="Where do you want to go?" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="field">
+                    <label for="days">Number of Days</label>
+                    <div class="input-wrap">
+                        <span class="icon">🗓</span>
+                        <input type="number" id="days" placeholder="e.g. 3" min="1" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="budget">Budget (₹)</label>
+                    <div class="input-wrap">
+                        <span class="icon">💰</span>
+                        <input type="number" id="budget" placeholder="e.g. 30000" min="1" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="travelers">Travelers</label>
+                    <div class="input-wrap">
+                        <span class="icon">👥</span>
+                        <input type="number" id="travelers" placeholder="e.g. 2" min="1" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn">
+                <span class="btn-text">✦ Generate My Trip</span>
+            </button>
+        </form>
+
+        <!-- LOADING -->
+        <div id="loading" class="card loading-card" aria-live="polite">
+            Planning your trip...
+        </div>
+
+        <!-- RESULTS -->
+        <div id="tripResult">
+            <!-- Trip plan will appear here -->
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
