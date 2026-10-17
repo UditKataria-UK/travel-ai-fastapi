@@ -96,7 +96,7 @@ tripForm.addEventListener("submit", async function (event) {
     try {
 
         const response = await fetch(
-            "http://localhost:8000/plan-trip",
+            "https://travel-ai-fastapi.onrender.com/plan-trip",
             {
                 method: "POST",
 
