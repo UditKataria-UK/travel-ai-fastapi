@@ -112,7 +112,8 @@ def get_weather(destination: str):
     # Step 2: Coordinates → Weather
     # --------------------------------
 
-    weather_url = "https://api.open-meteo.com/v1/forecast"
+    weather_url = "https://open-meteo-proxy.katariaudit2005.workers.dev/"
+    
 
     weather_params = {
         "latitude": latitude,
