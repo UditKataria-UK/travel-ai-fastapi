@@ -2,79 +2,171 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Trip Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AI-powered travel planner: weather, places, hotels, a day-wise itinerary and a budget check for your next trip.">
+    <meta name="theme-color" content="#0b1230">
+    <title>AI Trip Planner · Your Next Adventure, Planned by AI</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Markdown parser + HTML sanitizer (pinned versions). Order matters. -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
 
+    <a class="skip-link" href="#tripForm">Skip to trip form</a>
+
+    <!-- Icon sprite (inline, no external requests) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+        <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+        <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+        <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+        <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6"/><path d="M2 18h20"/></symbol>
+        <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+        <symbol id="i-droplets" viewBox="0 0 24 24"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></symbol>
+        <symbol id="i-wind" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></symbol>
+        <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 3v4M17 5h4"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+        <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+        <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></symbol>
+        <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    </svg>
+
     <!-- HERO -->
     <header class="hero">
-        <span class="badge">✦ AI POWERED TRAVEL PLANNER</span>
-        <h1>Plan Your Perfect Trip</h1>
-        <p>Let AI create a personalized itinerary, discover places, find hotels, and plan your budget.</p>
+        <div class="deco-grid" aria-hidden="true"></div>
+
+        <svg class="deco-route" viewBox="0 0 600 300" fill="none" aria-hidden="true" focusable="false">
+            <path d="M20 270 C 180 30, 430 30, 580 210" stroke="rgba(165,180,252,.5)" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"/>
+            <circle cx="20" cy="270" r="6" fill="#a5b4fc"/>
+            <circle cx="580" cy="210" r="6" fill="#e0e7ff"/>
+            <circle cx="580" cy="210" r="14" stroke="rgba(224,231,255,.4)"/>
+            <g class="deco-plane"><use href="#i-plane" x="290" y="62" width="30" height="30"/></g>
+        </svg>
+
+        <svg class="deco-compass" viewBox="0 0 200 200" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="100" cy="100" r="96" stroke="rgba(255,255,255,.14)"/>
+            <circle cx="100" cy="100" r="70" stroke="rgba(255,255,255,.1)"/>
+            <circle cx="100" cy="100" r="3" fill="rgba(255,255,255,.35)"/>
+            <path d="M100 4v22M100 174v22M4 100h22M174 100h22" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M100 40l12 48-12 12-12-12z" fill="rgba(165,180,252,.35)"/>
+        </svg>
+
+        <div class="hero-inner">
+            <span class="badge">
+                <svg class="icon" aria-hidden="true"><use href="#i-sparkles"></use></svg>
+                AI-Powered Travel Planner
+            </span>
+            <h1>Your Next Adventure, <span class="gradient-text">Planned by AI</span></h1>
+            <p class="hero-sub">Tell us where you want to go and what you can spend. Get weather, places to visit, hotel ideas, a day-by-day itinerary and a budget check in one place.</p>
+
+            <ul class="hero-features" aria-label="What you get">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-thermometer"></use></svg>Weather</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg>Places</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-bed"></use></svg>Hotels</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>Itinerary</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-wallet"></use></svg>Budget</li>
+            </ul>
+        </div>
     </header>
 
     <main class="container">
 
         <!-- TRIP INPUT CARD -->
-        <form id="tripForm" class="card form-card">
-
-            <div class="field field-wide">
-                <label for="destination">Destination</label>
-                <div class="input-wrap">
-                    <span class="icon">🌍</span>
-                    <input type="text" id="destination" placeholder="Where do you want to go?" required>
-                </div>
+        <form id="tripForm" class="card form-card" novalidate>
+            <div class="form-head">
+                <h2>Plan your trip</h2>
+                <p class="form-hint">All fields are required</p>
             </div>
 
-            <div class="form-row">
+            <div class="form-grid">
+
+                <div class="field field--destination">
+                    <label for="destination">Destination</label>
+                    <div class="input-wrap">
+                        <svg class="icon input-icon" aria-hidden="true"><use href="#i-pin"></use></svg>
+                        <input type="text" id="destination" name="destination" placeholder="Where do you want to go?" autocomplete="off" maxlength="80" required aria-describedby="destination-error">
+                    </div>
+                    <p class="field-error" id="destination-error" role="alert" hidden></p>
+                    <div class="chips">
+                        <span class="chips-label">Try:</span>
+                        <button type="button" class="chip" data-destination="Manali">Manali</button>
+                        <button type="button" class="chip" data-destination="Goa">Goa</button>
+                        <button type="button" class="chip" data-destination="Jaipur">Jaipur</button>
+                        <button type="button" class="chip" data-destination="Kerala">Kerala</button>
+                    </div>
+                </div>
+
                 <div class="field">
                     <label for="days">Number of Days</label>
                     <div class="input-wrap">
-                        <span class="icon">🗓</span>
-                        <input type="number" id="days" placeholder="e.g. 3" min="1" required>
+                        <svg class="icon input-icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                        <input type="number" id="days" name="days" placeholder="e.g. 3" min="1" max="60" step="1" inputmode="numeric" required aria-describedby="days-error">
                     </div>
+                    <p class="field-error" id="days-error" role="alert" hidden></p>
                 </div>
 
                 <div class="field">
                     <label for="budget">Budget (₹)</label>
                     <div class="input-wrap">
-                        <span class="icon">💰</span>
-                        <input type="number" id="budget" placeholder="e.g. 30000" min="1" required>
+                        <svg class="icon input-icon" aria-hidden="true"><use href="#i-wallet"></use></svg>
+                        <input type="number" id="budget" name="budget" placeholder="e.g. 30000" min="1" step="any" inputmode="numeric" required aria-describedby="budget-error">
                     </div>
+                    <p class="field-error" id="budget-error" role="alert" hidden></p>
                 </div>
 
                 <div class="field">
                     <label for="travelers">Travelers</label>
                     <div class="input-wrap">
-                        <span class="icon">👥</span>
-                        <input type="number" id="travelers" placeholder="e.g. 2" min="1" required>
+                        <svg class="icon input-icon" aria-hidden="true"><use href="#i-users"></use></svg>
+                        <input type="number" id="travelers" name="travelers" placeholder="e.g. 2" min="1" max="50" step="1" inputmode="numeric" required aria-describedby="travelers-error">
                     </div>
+                    <p class="field-error" id="travelers-error" role="alert" hidden></p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn" class="btn">
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                        <svg class="icon btn-icon" aria-hidden="true"><use href="#i-sparkles"></use></svg>
+                        <span class="btn-text">Generate Trip</span>
+                    </button>
                 </div>
             </div>
-
-            <button type="submit" id="submitBtn" class="btn">
-                <span class="btn-text">✦ Generate My Trip</span>
-            </button>
         </form>
 
         <!-- LOADING -->
-        <div id="loading" class="card loading-card" aria-live="polite">
-            Planning your trip...
+        <div id="loading" class="card loading-card" role="status" aria-live="polite" hidden>
+            <div class="loader" aria-hidden="true">
+                <svg class="icon"><use href="#i-compass"></use></svg>
+            </div>
+            <h3>Your AI travel planner is working...</h3>
+            <p class="loading-message" id="loadingMessage" aria-live="off"></p>
+            <p class="loading-note" id="loadingNote" hidden>This is taking longer than usual. If the server has been idle, the first request can be slow.</p>
+            <div class="skeleton-grid" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
         </div>
 
         <!-- RESULTS -->
-        <div id="tripResult">
-            <!-- Trip plan will appear here -->
-        </div>
+        <div id="tripResult" tabindex="-1" aria-live="polite"></div>
 
     </main>
 
-    <script src="script.js"></script>
+    <footer class="site-footer">
+        <p>AI-generated content can contain mistakes. Please verify prices, timings and availability before you book anything.</p>
+        <p class="site-footer-built">Built with FastAPI · LangGraph · OmniRoute</p>
+    </footer>
+
 </body>
 </html>
